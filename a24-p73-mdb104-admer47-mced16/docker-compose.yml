@@ -16,6 +16,7 @@ services:
         volumes:
             - ./www:/var/www/html
             - ./config/php/php.ini:/usr/local/etc/php/php.ini
+            - ./config/apache2/000-default.conf:/etc/apache2/sites-available/000-default.conf
             - ./log/apache2_access.log:/var/log/apache2/access.log
             - ./log/apache2_error.log:/var/log/apache2/error.log
         ports:
