@@ -2,7 +2,7 @@ version: '3.1'
 services:
 
     db_mariadb:
-        container_name: MariaDB-10.4
+        container_name: mariadb-104
         image: yobasystems/alpine-mariadb:10.4.13
         restart: always
         ports:
@@ -11,7 +11,7 @@ services:
             MYSQL_ROOT_PASSWORD: 112143
 
     php_apache:
-        container_name: PHP-7.3-Apache-2.4
+        container_name: php-73-apache-24
         build: setup/php
         volumes:
             - ./www:/var/www/html
@@ -28,14 +28,14 @@ services:
             - cache_memcached
 
     cache_memcached:
-        container_name: Memcached-1.6
+        container_name: memcached-16
         image: memcached:1.6.6-alpine
         restart: always
         ports:
             - 22222:11211
 
     db_adminer:
-        container_name: Adminer-4.7
+        container_name: adminer-47
         image: adminer:4.7.7-standalone
         restart: always
         ports:
