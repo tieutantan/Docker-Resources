@@ -1,6 +1,0 @@
-[Mon May 25 23:18:37.501994 2020] [core:warn] [pid 1] AH00111: Config variable ${APACHE_DOCUMENT_ROOT} is not defined
-[Mon May 25 23:18:37.502760 2020] [core:warn] [pid 1] AH00111: Config variable ${APACHE_DOCUMENT_ROOT} is not defined
-AH00112: Warning: DocumentRoot [/etc/apache2/${APACHE_DOCUMENT_ROOT}] does not exist
-AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.18.0.3. Set the 'ServerName' directive globally to suppress this message
-[Mon May 25 23:18:37.528361 2020] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.38 (Debian) PHP/7.3.18 configured -- resuming normal operations
-[Mon May 25 23:18:37.529111 2020] [core:notice] [pid 1] AH00094: Command line: 'apache2 -D FOREGROUND'
