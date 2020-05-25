@@ -34,8 +34,6 @@ services:
         container_name: memcached-16
         build: ./setup/memcached
         image: memcached-16:latest
-
-        image: 
         restart: always
         ports:
             - 22222:11211
