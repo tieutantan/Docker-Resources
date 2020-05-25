@@ -1,13 +1,11 @@
 # Base image
-FROM php:7.3-apache
+FROM php:7.2-apache
 
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Run apt update and install some dependancies needed for docker-php-ext
-RUN dpkg --add-architecture i386
-
-RUN apt-get update && apt install -y \
+RUN apt update && apt install -y \
   procps \
   sqlite3 \
   libicu-dev \
@@ -17,23 +15,14 @@ RUN apt-get update && apt install -y \
   libpng-dev \
   libxml2-dev \
   libmcrypt-dev \
-  libcurl4-gnutls-dev \
-  libzip-dev \ 
-  openssl \ 
-  libssl-dev
-
-RUN apt-get install -y libbz2-dev && docker-php-ext-install bz2
+  libcurl4-gnutls-dev
 
 RUN pecl install memcached
 RUN echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini
 
-RUN pecl install mcrypt-1.0.2 && docker-php-ext-enable mcrypt
-RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
-
-RUN docker-php-ext-install bcmath ctype fileinfo pdo tokenizer intl xml bcmath gd mysqli
 RUN docker-php-ext-install curl hash zip dom session mbstring xmlrpc pdo_mysql opcache json
-
-RUN apt-get clean
+RUN pecl install mcrypt-1.0.1 && docker-php-ext-enable mcrypt
+RUN docker-php-ext-install mysqli bcmath gd intl xml
 
 # Update web root to public
 # See: https://hub.docker.com/_/php#changing-documentroot-or-other-apache-configuration
