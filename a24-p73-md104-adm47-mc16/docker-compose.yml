@@ -4,8 +4,10 @@ services:
     db_mariadb:
         container_name: mariadb-104
         image: yobasystems/alpine-mariadb:10.4.13
+        command: "--innodb_use_native_aio=0"
         volumes: 
-            - ./config/mariadb_mariadb-server.cnf:/etc/my.cnf.d/mariadb-server.cnf
+            - ./data/mariadb:/var/lib/mysql
+            - ./config/mariadb_extra-config.cnf:/etc/my.cnf.d/mariadb_extra-config.cnf
         restart: always
         ports:
             - 33333:3306
@@ -20,8 +22,7 @@ services:
             - ./html:/var/www/html
             - ./config/php_php.ini:/usr/local/etc/php/php.ini
             - ./config/apache2_000-default.conf:/etc/apache2/sites-available/000-default.conf
-            - ./log/apache2_access.log:/var/log/apache2/access.log
-            - ./log/apache2_error.log:/var/log/apache2/error.log
+            - ./log/apache2:/var/log/apache2
         ports:
             - 80:80
             - 443:443
@@ -41,8 +42,26 @@ services:
     db_adminer:
         container_name: adminer-47
         image: adminer:4.7.7-standalone
+        volumes:
+            - ./config/adminer_0-upload_large_dumps.ini:/usr/local/etc/php/conf.d/0-upload_large_dumps.ini
         restart: always
         ports:
             - 11111:8080
         depends_on:
+            - db_mariadb
+
+    db_phpmyadmin:
+        container_name: phpmyadmin-5
+        image: phpmyadmin/phpmyadmin:5-fpm-alpine
+        volumes:
+            - ./config/phpmyadmin_php.ini:/usr/local/etc/php/php.ini
+        restart: always
+        ports:
+            - 8080:80
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=db_mariadb
+        depends_on:
+            - db_mariadb
+        links:
             - db_mariadb
