@@ -1,2 +1,3 @@
-/config/
-/www/
+/config/*
+/www/*
+/log/*
