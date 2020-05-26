@@ -4,6 +4,8 @@ services:
     db_mariadb:
         container_name: mariadb-104
         image: yobasystems/alpine-mariadb:10.4.13
+        volumes: 
+            ./config/mariadb_mariadb-server.cnf:/etc/my.cnf.d/mariadb-server.cnf
         restart: always
         ports:
             - 33333:3306
