@@ -5,7 +5,7 @@ services:
         container_name: mariadb-104
         image: yobasystems/alpine-mariadb:10.4.13
         volumes:
-            # - ./data/mariadb:/var/lib/mysql # enable on product server
+            # - ./data/mariadb:/var/lib/mysql # enable on linux
             - ./config/mariadb_extra.cnf:/etc/my.cnf.d/mariadb_extra.cnf
         restart: always
         ports:
