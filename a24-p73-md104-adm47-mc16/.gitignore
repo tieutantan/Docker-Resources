@@ -1,3 +1,4 @@
-# config/*
-# html/*
-# log/*
+config/*
+html/*
+log/*
+data/*
