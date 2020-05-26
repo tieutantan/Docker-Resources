@@ -4,10 +4,9 @@ services:
     db_mariadb:
         container_name: mariadb-104
         image: yobasystems/alpine-mariadb:10.4.13
-        command: "--innodb_use_native_aio=0"
         volumes: 
-            - ./data/mariadb:/var/lib/mysql
-            - ./config/mariadb_extra-config.cnf:/etc/my.cnf.d/mariadb_extra-config.cnf
+            # - ./data/mariadb:/var/lib/mysql # enable on product server
+            - ./config/mariadb_extra.cnf:/etc/my.cnf.d/mariadb_extra.cnf
         restart: always
         ports:
             - 33333:3306
@@ -52,15 +51,15 @@ services:
 
     db_phpmyadmin:
         container_name: phpmyadmin-5
-        image: phpmyadmin/phpmyadmin:5-fpm-alpine
+        image: bitnami/phpmyadmin:5.0.2
         volumes:
             - ./config/phpmyadmin_php.ini:/usr/local/etc/php/php.ini
         restart: always
         ports:
             - 8080:80
         environment:
-            - PMA_ARBITRARY=1
-            - PMA_HOST=db_mariadb
+            - DATABASE_HOST=db_mariadb
+            - DATABASE_PORT_NUMBER=3306
         depends_on:
             - db_mariadb
         links:
