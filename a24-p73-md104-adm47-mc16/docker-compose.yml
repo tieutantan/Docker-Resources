@@ -15,7 +15,7 @@ services:
         build: ./setup/php-apache
         image: apache-24-php-73:latest
         volumes:
-            - ./www:/var/www/html
+            - ./html:/var/www/html
             - ./config/php_php.ini:/usr/local/etc/php/php.ini
             - ./config/apache2_000-default.conf:/etc/apache2/sites-available/000-default.conf
             - ./log/apache2_access.log:/var/log/apache2/access.log
