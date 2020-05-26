@@ -18,8 +18,8 @@ RUN apt-get update && apt install -y \
   libxml2-dev \
   libmcrypt-dev \
   libcurl4-gnutls-dev \
-  libzip-dev \ 
-  openssl \ 
+  libzip-dev \
+  openssl \
   libssl-dev
 
 RUN apt-get install -y libbz2-dev && docker-php-ext-install bz2
