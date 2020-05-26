@@ -1,6 +1,8 @@
 # Base image
 FROM php:7.3-apache
 
+LABEL maintainer="info@tantn.com"
+
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -37,3 +39,5 @@ RUN apt-get clean
 
 # Enable mod_rewrite
 RUN a2enmod rewrite
+RUN a2ensite default-ssl
+RUN a2enmod ssl
