@@ -9,7 +9,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Run apt update and install some dependancies needed for docker-php-ext
 RUN dpkg --add-architecture i386
 
-RUN apt-get update && apt install -y \
+RUN apt-get update && apt install -y --no-install-recommends apt-utils \
   procps \
   sqlite3 \
   libicu-dev \
@@ -35,9 +35,10 @@ RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 RUN docker-php-ext-install bcmath ctype fileinfo pdo tokenizer intl xml bcmath gd mysqli
 RUN docker-php-ext-install curl hash zip dom session mbstring xmlrpc pdo_mysql opcache json
 
+RUN apt-get install -y iputils-ping wget nano
 RUN apt-get clean
 
 # Enable mod_rewrite
 RUN a2enmod rewrite
-RUN a2ensite default-ssl
+# RUN a2ensite default-ssl
 RUN a2enmod ssl
