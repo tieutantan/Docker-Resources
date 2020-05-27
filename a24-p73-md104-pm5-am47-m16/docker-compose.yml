@@ -26,7 +26,6 @@ services:
             - ./log/apache2:/var/log/apache2
         ports:
             - 80:80
-            - 443:443
         depends_on:
             - db_mariadb
         links:
