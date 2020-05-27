@@ -15,7 +15,7 @@
 7. phpmyadmin 5.0
 
 ```
-git clone -b lamp --single-branch https://github.com/tieutantan/Docker-Resources.git folder_name
+git clone -b lamp --single-branch https://github.com/tieutantan/Docker-Resources.git .
 ```
 
 ---
