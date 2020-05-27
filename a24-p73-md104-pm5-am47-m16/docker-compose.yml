@@ -32,6 +32,7 @@ services:
         links:
             - db_mariadb
             - cache_memcached
+            - cache_redis
 
     cache_memcached:
         container_name: memcached-16
@@ -40,6 +41,18 @@ services:
         restart: always
         ports:
             - 11211:11211
+
+    cache_redis:
+        container_name: redis-603
+        build: ./setup/redis
+        image: redis-603
+        restart: always
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+            - REDIS_PASSWORD=secret
+        command: /opt/bitnami/scripts/redis/run.sh --maxmemory 256mb
+        ports:
+            - 6379:6379
 
     db_adminer:
         container_name: adminer-47
