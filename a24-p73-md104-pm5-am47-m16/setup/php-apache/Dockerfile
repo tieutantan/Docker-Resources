@@ -61,6 +61,10 @@ RUN apt-get clean
 RUN rm -rf /usr/src/*
 RUN rm -rf /var/lib/apt/lists/*
 
+# Config Apache R+W
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+
 # Enable mod_rewrite
 RUN a2enmod rewrite
 
