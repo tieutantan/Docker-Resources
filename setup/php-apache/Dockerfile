@@ -71,5 +71,5 @@ RUN a2enmod rewrite
 # RUN a2ensite default-ssl
 RUN a2enmod ssl
 
-# Restart
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+# Add servername for apache
+RUN printf "\nServerName localhost\n$(ls)" >> /etc/apache2/apache2.conf
