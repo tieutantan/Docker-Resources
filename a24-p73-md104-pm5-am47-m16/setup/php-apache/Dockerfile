@@ -66,3 +66,6 @@ RUN a2enmod rewrite
 
 # RUN a2ensite default-ssl
 RUN a2enmod ssl
+
+# Restart
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
