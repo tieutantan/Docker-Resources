@@ -7,7 +7,7 @@ services:
         build: ./setup/mariadb
         image: mariadb-104
         volumes:
-            # - ./data/mariadb:/var/lib/mysql # enable on linux
+            - ./data/mariadb:/var/lib/mysql # enable on linux
             - ./config/mariadb_extra.cnf:/etc/my.cnf.d/mariadb_extra.cnf
         restart: always
         ports:
