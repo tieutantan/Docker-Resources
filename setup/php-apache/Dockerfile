@@ -49,7 +49,8 @@ RUN docker-php-ext-install mysqli gettext
 RUN docker-php-ext-install bcmath gd
 RUN docker-php-ext-install intl xml
 RUN docker-php-ext-install pdo tokenizer
-RUN docker-php-ext-install fileinfo json
+RUN docker-php-ext-install fileinfo
+RUN docker-php-ext-install json
 RUN docker-php-ext-install pdo_mysql opcache
 RUN docker-php-ext-install mbstring xmlrpc
 RUN docker-php-ext-install dom session
