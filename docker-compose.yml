@@ -2,18 +2,27 @@ version: '2.0'
 
 services:
 
-    db_mariadb:
-        container_name: mariadb-104
-        build: ./setup/mariadb
-        image: mariadb-104
+    db_mysql:
+        container_name: mysql-802
+        build: ./setup/mysql
+        image: mysql-802
+        command: --default-authentication-plugin=mysql_native_password
         volumes:
-            # - ./data/mariadb:/var/lib/mysql # enable on linux
-            - ./config/mariadb_extra.cnf:/etc/my.cnf.d/mariadb_extra.cnf
+            - /config/mysql:/etc/mysql/conf.d
+            - /data/mysql:/var/lib/mysql
         restart: always
         ports:
             - 3306:3306
         environment:
             MYSQL_ROOT_PASSWORD: 112143
+
+    cache_memcached:
+        container_name: memcached-16
+        build: ./setup/memcached
+        image: memcached-16
+        restart: always
+        ports:
+            - 11211:11211
 
     php_apache:
         container_name: apache-24-php-73
@@ -27,43 +36,35 @@ services:
         ports:
             - 80:80
         depends_on:
-            - db_mariadb
+            - db_mysql
         links:
-            - db_mariadb
+            - db_mysql
             - cache_memcached
             - cache_redis
 
-    cache_memcached:
-        container_name: memcached-16
-        build: ./setup/memcached
-        image: memcached-16
-        restart: always
-        ports:
-            - 11211:11211
+    # cache_redis:
+    #     container_name: redis-603
+    #     build: ./setup/redis
+    #     image: redis-603
+    #     restart: always
+    #     environment:
+    #         - ALLOW_EMPTY_PASSWORD=yes
+    #         - REDIS_PASSWORD=secret
+    #     command: /opt/bitnami/scripts/redis/run.sh --maxmemory 256mb
+    #     ports:
+    #         - 6379:6379
 
-    cache_redis:
-        container_name: redis-603
-        build: ./setup/redis
-        image: redis-603
-        restart: always
-        environment:
-            - ALLOW_EMPTY_PASSWORD=yes
-            - REDIS_PASSWORD=secret
-        command: /opt/bitnami/scripts/redis/run.sh --maxmemory 256mb
-        ports:
-            - 6379:6379
-
-    db_adminer:
-        container_name: adminer-47
-        build: ./setup/adminer
-        image: adminer-47
-        volumes:
-            - ./config/adminer_0-upload_large_dumps.ini:/usr/local/etc/php/conf.d/0-upload_large_dumps.ini
-        restart: always
-        ports:
-            - 8000:8080
-        depends_on:
-            - db_mariadb
+    # db_adminer:
+    #     container_name: adminer-47
+    #     build: ./setup/adminer
+    #     image: adminer-47
+    #     volumes:
+    #         - ./config/adminer_0-upload_large_dumps.ini:/usr/local/etc/php/conf.d/0-upload_large_dumps.ini
+    #     restart: always
+    #     ports:
+    #         - 8000:8080
+    #     depends_on:
+    #         - db_mysql
 
     db_phpmyadmin:
         container_name: phpmyadmin-5
@@ -75,9 +76,9 @@ services:
         ports:
             - 8001:80
         environment:
-            - DATABASE_HOST=db_mariadb
+            - DATABASE_HOST=db_mysql
             - DATABASE_PORT_NUMBER=3306
         depends_on:
-            - db_mariadb
+            - db_mysql
         links:
-            - db_mariadb
+            - db_mysql
