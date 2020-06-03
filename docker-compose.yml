@@ -40,7 +40,7 @@ services:
         links:
             - db_mysql
             - cache_memcached
-            - cache_redis
+            # - cache_redis
 
     # cache_redis:
     #     container_name: redis-603
