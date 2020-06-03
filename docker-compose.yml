@@ -8,8 +8,13 @@ services:
         image: mysql-802
         command: --default-authentication-plugin=mysql_native_password
         volumes:
+<<<<<<< HEAD
             - /config/mysql:/etc/mysql/conf.d
             - /data/mysql:/var/lib/mysql
+=======
+            - ./data/mariadb:/var/lib/mysql # enable on linux
+            - ./config/mariadb_extra.cnf:/etc/my.cnf.d/mariadb_extra.cnf
+>>>>>>> 30906b525707e4110379c0260d8e9a72dabb082b
         restart: always
         ports:
             - 3306:3306

@@ -65,6 +65,9 @@ RUN rm -rf /var/lib/apt/lists/*
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
 
+# Add root to apache
+RUN adduser root www-data
+
 # Enable mod_rewrite
 RUN a2enmod rewrite
 
