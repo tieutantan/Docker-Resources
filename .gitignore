@@ -1,3 +1,5 @@
+config/apache2_000-default.conf
+
 html/*
 log/*
 data/*
