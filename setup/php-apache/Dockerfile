@@ -44,8 +44,17 @@ RUN pecl install mcrypt-1.0.3 && docker-php-ext-enable mcrypt
 RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
 # PHP extensions
-RUN docker-php-ext-install bcmath ctype fileinfo pdo tokenizer intl xml bcmath gd mysqli gettext
-RUN docker-php-ext-install curl hash zip dom session mbstring xmlrpc pdo_mysql opcache json
+RUN docker-php-ext-install bcmath ctype 
+RUN docker-php-ext-install mysqli gettext
+RUN docker-php-ext-install bcmath gd
+RUN docker-php-ext-install intl xml
+RUN docker-php-ext-install pdo tokenizer
+RUN docker-php-ext-install fileinfo json
+RUN docker-php-ext-install pdo_mysql opcache
+RUN docker-php-ext-install mbstring xmlrpc
+RUN docker-php-ext-install dom session
+RUN docker-php-ext-install hash zip
+RUN docker-php-ext-install curl
 
 # Install Freetype
 RUN apt-get -y update && \
