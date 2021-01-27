@@ -27,7 +27,7 @@ services:
     php_apache:
         container_name: apache-24-php-74
         build: ./setup/php-apache
-        image: apache-24-php-73
+        image: apache-24-php-74
         volumes:
             - ./html:/var/www/html
             - ./config/php_php.ini:/usr/local/etc/php/php.ini
