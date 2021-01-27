@@ -1,88 +1,26 @@
-# Base image
-FROM php:7.4-apache
+FROM php:7.4.1-apache
 
-LABEL maintainer="info@tantn.com"
+USER root
 
-# Fix debconf warnings upon build
-ARG DEBIAN_FRONTEND=noninteractive
+WORKDIR /var/www/html
 
-# Run apt update and install some dependancies needed for docker-php-ext
-RUN dpkg --add-architecture i386
+RUN apt-get update && apt-get install -y \
+        libpng-dev \
+        zlib1g-dev \
+        libxml2-dev \
+        libzip-dev \
+        libonig-dev \
+        zip \
+        curl \
+        unzip \
+    && docker-php-ext-configure gd \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install mysqli \
+    && docker-php-ext-install zip \
+    && docker-php-source delete
 
-# Update
-RUN apt-get -y update --fix-missing && \
-    apt-get upgrade -y && \
-    apt-get --no-install-recommends install -y apt-utils
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# OS lib
-RUN apt-get -y --no-install-recommends install \
-  procps libz-dev libmemcached-dev libpng-dev zlib1g-dev libcurl4-gnutls-dev libicu-dev \
-  libmcrypt-dev libzip-dev libssl-dev dialog libsqlite3-dev libsqlite3-0 libxml2-dev
-RUN apt-get -y --no-install-recommends install --fix-missing build-essential \
-  git curl libcurl4 libcurl3-dev zip openssl
-
-# Install Composer
-RUN rm -rf /var/lib/apt/lists/* && \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Install xdebug
-RUN pecl install xdebug-2.9.5 && docker-php-ext-enable xdebug
-
-# Install redis
-RUN pecl install redis-5.1.1 && docker-php-ext-enable redis
-
-# Install bzip2
-RUN apt-get update
-RUN apt-get install -y libbz2-dev && docker-php-ext-install bz2
-
-# Install memcached
-RUN pecl install memcached
-RUN echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini
-
-# Install mcrypt
-RUN pecl install mcrypt-1.0.3 && docker-php-ext-enable mcrypt
-RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
-
-# PHP extensions
-RUN docker-php-ext-install bcmath ctype 
-RUN docker-php-ext-install mysqli gettext
-RUN docker-php-ext-install bcmath gd
-RUN docker-php-ext-install intl xml
-RUN docker-php-ext-install pdo tokenizer
-RUN docker-php-ext-install fileinfo
-RUN docker-php-ext-install json
-RUN docker-php-ext-install pdo_mysql opcache
-RUN docker-php-ext-install mbstring xmlrpc
-RUN docker-php-ext-install dom session
-RUN docker-php-ext-install hash zip
-RUN docker-php-ext-install curl
-
-# Install Freetype
-RUN apt-get -y update && \
-    apt-get --no-install-recommends install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
-    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
-    docker-php-ext-install -j$(nproc) gd
-
-# Tools
-RUN apt-get install -y iputils-ping wget nano
-
-# Cleanup
-RUN apt-get clean
-RUN rm -rf /usr/src/*
-RUN rm -rf /var/lib/apt/lists/*
-
-# Config Apache R+W
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-
-# Add root to apache
-RUN adduser root www-data
-
-# Enable mod_rewrite
-RUN a2enmod rewrite
-
-# RUN a2ensite default-ssl
-RUN a2enmod ssl
-
-# Add servername for apache
-RUN printf "\nServerName localhost\n$(ls)" >> /etc/apache2/apache2.conf
+RUN chown -R www-data:www-data /var/www/html \
+    && a2enmod rewrite
