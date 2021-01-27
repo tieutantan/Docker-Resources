@@ -25,7 +25,7 @@ services:
             - 11211:11211
 
     php_apache:
-        container_name: apache-24-php-73
+        container_name: apache-24-php-74
         build: ./setup/php-apache
         image: apache-24-php-73
         volumes:
